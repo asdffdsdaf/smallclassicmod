@@ -1,0 +1,23 @@
+*** com/mojang/minecraft/render/ShapeRenderer.java	2013-07-15 21:08:26.000000000 -0700
+--- com/mojang/minecraft/render/ShapeRenderer.java	2013-07-15 19:59:35.348457000 -0700
+***************
+*** 139,147 ****
+           }
+  
+           this.color = true;
+!          this.r = (float)(var5 & 255) / 255.0F;
+!          this.g = (float)(var6 & 255) / 255.0F;
+!          this.b = (float)(var8 & 255) / 255.0F;
+        }
+  
+     }
+--- 139,147 ----
+           }
+  
+           this.color = true;
+!          this.r = (var5 & 255) / 255.0F;
+!          this.g = (var6 & 255) / 255.0F;
+!          this.b = (var8 & 255) / 255.0F;
+        }
+  
+     }

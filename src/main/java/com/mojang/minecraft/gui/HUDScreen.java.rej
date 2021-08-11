@@ -1,0 +1,63 @@
+*** com/mojang/minecraft/gui/HUDScreen.java	2013-07-15 21:08:30.000000000 -0700
+--- com/mojang/minecraft/gui/HUDScreen.java	2013-07-15 19:59:35.324457000 -0700
+***************
+*** 94,101 ****
+           }
+  
+           if(this.mc.player.isUnderWater()) {
+!             var12 = (int)Math.ceil((double)(this.mc.player.airSupply - 2) * 10.0D / 300.0D);
+!             var26 = (int)Math.ceil((double)this.mc.player.airSupply * 10.0D / 300.0D) - var12;
+  
+              for(var14 = 0; var14 < var12 + var26; ++var14) {
+                 if(var14 < var12) {
+--- 94,101 ----
+           }
+  
+           if(this.mc.player.isUnderWater()) {
+!             var12 = (int)Math.ceil((this.mc.player.airSupply - 2) * 10.0D / 300.0D);
+!             var26 = (int)Math.ceil(this.mc.player.airSupply * 10.0D / 300.0D) - var12;
+  
+              for(var14 = 0; var14 < var12 + var26; ++var14) {
+                 if(var14 < var12) {
+***************
+*** 115,124 ****
+           var14 = this.height - 16;
+           if((var15 = var8.slots[var12]) > 0) {
+              GL11.glPushMatrix();
+!             GL11.glTranslatef((float)var26, (float)var14, -50.0F);
+              if(var8.popTime[var12] > 0) {
+                 float var18;
+!                float var21 = -MathHelper.sin((var18 = ((float)var8.popTime[var12] - var1) / 5.0F) * var18 * 3.1415927F) * 8.0F;
+                 float var19 = MathHelper.sin(var18 * var18 * 3.1415927F) + 1.0F;
+                 float var16 = MathHelper.sin(var18 * 3.1415927F) + 1.0F;
+                 GL11.glTranslatef(10.0F, var21 + 10.0F, 0.0F);
+--- 115,124 ----
+           var14 = this.height - 16;
+           if((var15 = var8.slots[var12]) > 0) {
+              GL11.glPushMatrix();
+!             GL11.glTranslatef(var26, var14, -50.0F);
+              if(var8.popTime[var12] > 0) {
+                 float var18;
+!                float var21 = -MathHelper.sin((var18 = (var8.popTime[var12] - var1) / 5.0F) * var18 * 3.1415927F) * 8.0F;
+                 float var19 = MathHelper.sin(var18 * var18 * 3.1415927F) + 1.0F;
+                 float var16 = MathHelper.sin(var18 * 3.1415927F) + 1.0F;
+                 GL11.glTranslatef(10.0F, var21 + 10.0F, 0.0F);
+***************
+*** 164,171 ****
+        }
+  
+        for(var14 = 0; var14 < this.chat.size() && var14 < var25; ++var14) {
+!          if(((ChatLine)this.chat.get(var14)).time < 200 || var27) {
+!             var5.render(((ChatLine)this.chat.get(var14)).message, 2, this.height - 8 - var14 * 9 - 20, 16777215);
+           }
+        }
+  
+--- 164,171 ----
+        }
+  
+        for(var14 = 0; var14 < this.chat.size() && var14 < var25; ++var14) {
+!          if(this.chat.get(var14).time < 200 || var27) {
+!             var5.render(this.chat.get(var14).message, 2, this.height - 8 - var14 * 9 - 20, 16777215);
+           }
+        }
+  

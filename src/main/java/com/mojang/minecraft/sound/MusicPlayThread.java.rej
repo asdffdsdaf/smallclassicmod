@@ -1,0 +1,157 @@
+*** com/mojang/minecraft/sound/MusicPlayThread.java	2013-07-15 21:08:28.000000000 -0700
+--- com/mojang/minecraft/sound/MusicPlayThread.java	2013-07-15 20:54:07.584432000 -0700
+***************
+*** 11,64 ****
+  
+     public MusicPlayThread(Music var1) {
+        this.music = var1;
+-       super();
+        this.setPriority(10);
+        this.setDaemon(true);
+     }
+  
+     public final void run() {
+!       while(true) {
+!          try {
+              if(this.music.stopped) {
+                 return;
+              }
+  
+-             Music var1 = this.music;
+-             ByteBuffer var2;
+-             Music var10001;
+              if(this.music.playing == null) {
+-                var1 = this.music;
+                 if(this.music.current != null) {
+!                   var1 = this.music;
+!                   var2 = this.music.current;
+!                   var10001 = this.music;
+!                   this.music.playing = var2;
+!                   var2 = null;
+!                   var1 = this.music;
+                    this.music.current = null;
+-                   var1 = this.music;
+                    this.music.playing.clear();
+                 }
+              }
+  
+-             var1 = this.music;
+              if(this.music.playing != null) {
+-                var1 = this.music;
+                 if(this.music.playing.remaining() != 0) {
+                    while(true) {
+-                      var1 = this.music;
+                       if(this.music.playing.remaining() == 0) {
+                          break;
+                       }
+  
+!                      var1 = this.music;
+!                      var1 = this.music;
+!                      var2 = this.music.playing;
+!                      VorbisStream var9 = this.music.stream;
+!                      int var10 = this.music.stream.readPcm(var2.array(), var2.position(), var2.remaining());
+!                      var2.position(var2.position() + var10);
+!                      boolean var11;
+!                      if(var11 = var10 <= 0) {
+                          this.music.finished = true;
+                          this.music.stopped = true;
+                          break;
+--- 9,43 ----
+  
+     public MusicPlayThread(Music var1) {
+        this.music = var1;
+        this.setPriority(10);
+        this.setDaemon(true);
+     }
+  
+     public final void run() {
+!       try {
+!          while(this.music.player.running) {
+              if(this.music.stopped) {
+                 return;
+              }
+  
+              if(this.music.playing == null) {
+                 if(this.music.current != null) {
+!                   this.music.playing = this.music.current;
+                    this.music.current = null;
+                    this.music.playing.clear();
+                 }
+              }
+  
+              if(this.music.playing != null) {
+                 if(this.music.playing.remaining() != 0) {
+                    while(true) {
+                       if(this.music.playing.remaining() == 0) {
+                          break;
+                       }
+  
+!                      int var10 = this.music.stream.readPcm(this.music.playing.array(), this.music.playing.position(), this.music.playing.remaining());
+!                      this.music.playing.position(this.music.playing.position() + var10);
+!                      if(var10 <= 0) {
+                          this.music.finished = true;
+                          this.music.stopped = true;
+                          break;
+***************
+*** 67,103 ****
+                 }
+              }
+  
+-             var1 = this.music;
+              if(this.music.playing != null) {
+-                var1 = this.music;
+                 if(this.music.previous == null) {
+-                   var1 = this.music;
+                    this.music.playing.flip();
+!                   var1 = this.music;
+!                   var2 = this.music.playing;
+!                   var10001 = this.music;
+!                   this.music.previous = var2;
+!                   var2 = null;
+!                   var1 = this.music;
+!                   this.music.playing = var2;
+                 }
+              }
+  
+              Thread.sleep(10L);
+-             var1 = this.music;
+-             if(this.music.player.running) {
+-                continue;
+-             }
+-          } catch (EndOfOggStreamException var6) {
+-             return;
+-          } catch (Exception var7) {
+-             var7.printStackTrace();
+-             return;
+-          } finally {
+-             this.music.finished = true;
+           }
+! 
+           return;
+        }
+     }
+  }
+--- 46,68 ----
+                 }
+              }
+  
+              if(this.music.playing != null) {
+                 if(this.music.previous == null) {
+                    this.music.playing.flip();
+!                   this.music.previous = this.music.playing;
+!                   this.music.playing = null;
+                 }
+              }
+  
+              Thread.sleep(10L);
+           }
+!       } catch (EndOfOggStreamException var6) {
+!       } catch (Exception var7) {
+!          var7.printStackTrace();
+           return;
++       } finally {
++          this.music.finished = true;
+        }
++ 
+     }
+  }

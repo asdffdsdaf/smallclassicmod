@@ -1,0 +1,25 @@
+*** de/jarnbjo/vorbis/AudioPacket.java	2013-07-15 21:08:38.000000000 -0700
+--- de/jarnbjo/vorbis/AudioPacket.java	2013-07-15 19:59:35.352457000 -0700
+***************
+*** 53,63 ****
+              throw new VorbisFormatException("Reference to invalid mode in audio packet.");
+           }
+  
+-          Mode var6 = this.mode;
+           this.mapping = var8[this.mode.mapping];
+           int[] var19 = this.mapping.getMagnitudes();
+           int[] var21 = this.mapping.getAngles();
+-          var6 = this.mode;
+           this.blockFlag = this.mode.blockFlag;
+           int var18 = var5.blockSize0;
+           int var11 = var5.blockSize1;
+--- 53,61 ----
+              throw new VorbisFormatException("Reference to invalid mode in audio packet.");
+           }
+  
+           this.mapping = var8[this.mode.mapping];
+           int[] var19 = this.mapping.getMagnitudes();
+           int[] var21 = this.mapping.getAngles();
+           this.blockFlag = this.mode.blockFlag;
+           int var18 = var5.blockSize0;
+           int var11 = var5.blockSize1;

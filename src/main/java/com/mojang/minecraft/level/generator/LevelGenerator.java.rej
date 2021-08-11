@@ -1,0 +1,147 @@
+*** com/mojang/minecraft/level/generator/LevelGenerator.java	2013-07-15 21:08:36.000000000 -0700
+--- com/mojang/minecraft/level/generator/LevelGenerator.java	2013-07-15 20:54:28.204431000 -0700
+***************
+*** 74,81 ****
+           var5.setProgress(var51 * 100 / (var5.width - 1));
+  
+           for(var54 = 0; var54 < var5.depth; ++var54) {
+!             double var21 = var7.compute((double)(var51 << 1), (double)(var54 << 1)) / 8.0D;
+!             var12 = var49.compute((double)(var51 << 1), (double)(var54 << 1)) > 0.0D?1:0;
+              if(var21 > 2.0D) {
+                 var23 = ((var42[var51 + var54 * var5.width] - var12) / 2 << 1) + var12;
+                 var42[var51 + var54 * var5.width] = var23;
+--- 74,81 ----
+           var5.setProgress(var51 * 100 / (var5.width - 1));
+  
+           for(var54 = 0; var54 < var5.depth; ++var54) {
+!             double var21 = var7.compute(var51 << 1, var54 << 1) / 8.0D;
+!             var12 = var49.compute(var51 << 1, var54 << 1) > 0.0D?1:0;
+              if(var21 > 2.0D) {
+                 var23 = ((var42[var51 + var54 * var5.width] - var12) / 2 << 1) + var12;
+                 var42[var51 + var54 * var5.width] = var23;
+***************
+*** 100,106 ****
+           var5.setProgress(var24 * 100 / (var5.width - 1));
+  
+           for(var11 = 0; var11 < var48; ++var11) {
+!             var12 = (int)(var53.compute((double)var24, (double)var11) / 24.0D) - 4;
+              var25 = (var23 = var42[var24 + var11 * var46] + var5.waterLevel) + var12;
+              var42[var24 + var11 * var46] = Math.max(var23, var25);
+              if(var42[var24 + var11 * var46] > var51 - 2) {
+--- 100,106 ----
+           var5.setProgress(var24 * 100 / (var5.width - 1));
+  
+           for(var11 = 0; var11 < var48; ++var11) {
+!             var12 = (int)(var53.compute(var24, var11) / 24.0D) - 4;
+              var25 = (var23 = var42[var24 + var11 * var46] + var5.waterLevel) + var12;
+              var42[var24 + var11 * var46] = Math.max(var23, var25);
+              if(var42[var24 + var11 * var46] > var51 - 2) {
+***************
+*** 132,139 ****
+        }
+  
+        this.progressBar.setText("Carving..");
+-       boolean var45 = true;
+-       boolean var44 = false;
+        var5 = this;
+        var48 = this.width;
+        var51 = this.depth;
+--- 132,137 ----
+        }
+  
+        this.progressBar.setText("Carving..");
+        var5 = this;
+        var48 = this.width;
+        var51 = this.depth;
+***************
+*** 142,150 ****
+  
+        for(var11 = 0; var11 < var24; ++var11) {
+           var5.setProgress(var11 * 100 / (var24 - 1) / 4);
+!          float var55 = var5.random.nextFloat() * (float)var48;
+!          float var59 = var5.random.nextFloat() * (float)var54;
+!          float var56 = var5.random.nextFloat() * (float)var51;
+           var26 = (int)((var5.random.nextFloat() + var5.random.nextFloat()) * 200.0F);
+           float var61 = var5.random.nextFloat() * 3.1415927F * 2.0F;
+           float var64 = 0.0F;
+--- 140,148 ----
+  
+        for(var11 = 0; var11 < var24; ++var11) {
+           var5.setProgress(var11 * 100 / (var24 - 1) / 4);
+!          float var55 = var5.random.nextFloat() * var48;
+!          float var59 = var5.random.nextFloat() * var54;
+!          float var56 = var5.random.nextFloat() * var51;
+           var26 = (int)((var5.random.nextFloat() + var5.random.nextFloat()) * 200.0F);
+           float var61 = var5.random.nextFloat() * 3.1415927F * 2.0F;
+           float var64 = 0.0F;
+***************
+*** 164,179 ****
+                 float var43 = var55 + (var5.random.nextFloat() * 4.0F - 2.0F) * 0.2F;
+                 float var50 = var59 + (var5.random.nextFloat() * 4.0F - 2.0F) * 0.2F;
+                 float var33 = var56 + (var5.random.nextFloat() * 4.0F - 2.0F) * 0.2F;
+!                float var34 = ((float)var5.height - var50) / (float)var5.height;
+                 var34 = 1.2F + (var34 * 3.5F + 1.0F) * var31;
+!                var34 = MathHelper.sin((float)var32 * 3.1415927F / (float)var26) * var34;
+  
+                 for(int var35 = (int)(var43 - var34); var35 <= (int)(var43 + var34); ++var35) {
+                    for(int var36 = (int)(var50 - var34); var36 <= (int)(var50 + var34); ++var36) {
+                       for(int var37 = (int)(var33 - var34); var37 <= (int)(var33 + var34); ++var37) {
+!                         float var38 = (float)var35 - var43;
+!                         float var39 = (float)var36 - var50;
+!                         float var40 = (float)var37 - var33;
+                          if(var38 * var38 + var39 * var39 * 2.0F + var40 * var40 < var34 * var34 && var35 >= 1 && var36 >= 1 && var37 >= 1 && var35 < var5.width - 1 && var36 < var5.height - 1 && var37 < var5.depth - 1) {
+                             int var66 = (var36 * var5.depth + var37) * var5.width + var35;
+                             if(var5.blocks[var66] == Block.STONE.id) {
+--- 162,177 ----
+                 float var43 = var55 + (var5.random.nextFloat() * 4.0F - 2.0F) * 0.2F;
+                 float var50 = var59 + (var5.random.nextFloat() * 4.0F - 2.0F) * 0.2F;
+                 float var33 = var56 + (var5.random.nextFloat() * 4.0F - 2.0F) * 0.2F;
+!                float var34 = (var5.height - var50) / var5.height;
+                 var34 = 1.2F + (var34 * 3.5F + 1.0F) * var31;
+!                var34 = MathHelper.sin(var32 * 3.1415927F / var26) * var34;
+  
+                 for(int var35 = (int)(var43 - var34); var35 <= (int)(var43 + var34); ++var35) {
+                    for(int var36 = (int)(var50 - var34); var36 <= (int)(var50 + var34); ++var36) {
+                       for(int var37 = (int)(var33 - var34); var37 <= (int)(var33 + var34); ++var37) {
+!                         float var38 = var35 - var43;
+!                         float var39 = var36 - var50;
+!                         float var40 = var37 - var33;
+                          if(var38 * var38 + var39 * var39 * 2.0F + var40 * var40 < var34 * var34 && var35 >= 1 && var36 >= 1 && var37 >= 1 && var35 < var5.width - 1 && var36 < var5.height - 1 && var37 < var5.depth - 1) {
+                             int var66 = (var36 * var5.depth + var37) * var5.width + var35;
+                             if(var5.blocks[var66] == Block.STONE.id) {
+***************
+*** 231,237 ****
+           }
+  
+           var51 = var5.random.nextInt(var5.width);
+!          var54 = (int)(var5.random.nextFloat() * var5.random.nextFloat() * (float)(var5.waterLevel - 3));
+           var24 = var5.random.nextInt(var5.depth);
+           if(var5.blocks[(var54 * var5.depth + var24) * var5.width + var51] == 0) {
+              var5.flood(var51, var54, var24, 0, Block.STATIONARY_LAVA.id);
+--- 229,235 ----
+           }
+  
+           var51 = var5.random.nextInt(var5.width);
+!          var54 = (int)(var5.random.nextFloat() * var5.random.nextFloat() * (var5.waterLevel - 3));
+           var24 = var5.random.nextInt(var5.depth);
+           if(var5.blocks[(var54 * var5.depth + var24) * var5.width + var51] == 0) {
+              var5.flood(var51, var54, var24, 0, Block.STATIONARY_LAVA.id);
+***************
+*** 253,260 ****
+           var5.setProgress(var11 * 100 / (var5.width - 1));
+  
+           for(var12 = 0; var12 < var48; ++var12) {
+!             boolean var60 = var53.compute((double)var11, (double)var12) > 8.0D;
+!             boolean var57 = var58.compute((double)var11, (double)var12) > 12.0D;
+              var27 = ((var26 = var42[var11 + var12 * var46]) * var5.depth + var12) * var5.width + var11;
+              if(((var28 = var5.blocks[((var26 + 1) * var5.depth + var12) * var5.width + var11] & 255) == Block.WATER.id || var28 == Block.STATIONARY_WATER.id) && var26 <= var51 / 2 - 1 && var57) {
+                 var5.blocks[var27] = (byte)Block.GRAVEL.id;
+--- 251,258 ----
+           var5.setProgress(var11 * 100 / (var5.width - 1));
+  
+           for(var12 = 0; var12 < var48; ++var12) {
+!             boolean var60 = var53.compute(var11, var12) > 8.0D;
+!             boolean var57 = var58.compute(var11, var12) > 12.0D;
+              var27 = ((var26 = var42[var11 + var12 * var46]) * var5.depth + var12) * var5.width + var11;
+              if(((var28 = var5.blocks[((var26 + 1) * var5.depth + var12) * var5.width + var11] & 255) == Block.WATER.id || var28 == Block.STATIONARY_WATER.id) && var26 <= var51 / 2 - 1 && var57) {
+                 var5.blocks[var27] = (byte)Block.GRAVEL.id;

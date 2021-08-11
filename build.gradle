@@ -1,0 +1,26 @@
+plugins {
+    id 'java'
+}
+
+group 'org.example'
+version 'c'
+
+repositories {
+    mavenCentral()
+    maven { url "https://clojars.org/repo" }
+}
+compileJava.options.fork = true
+compileJava.options.forkOptions.executable = '/usr/lib/jvm/zulu-8/bin/javac'
+dependencies {
+    implementation 'org.lwjgl.lwjgl:lwjgl:2.9.3'
+    implementation 'org.lwjgl:lwjgl-util:2.7.1'
+    testImplementation 'org.junit.jupiter:junit-jupiter-api:5.7.0'
+    testRuntimeOnly 'org.junit.jupiter:junit-jupiter-engine:5.7.0'
+}
+
+sourceSets.main.resources.srcDirs = [ "src/main/java" ]
+sourceSets.main.resources.includes = [ "**/*.png" ]
+
+test {
+    useJUnitPlatform()
+}

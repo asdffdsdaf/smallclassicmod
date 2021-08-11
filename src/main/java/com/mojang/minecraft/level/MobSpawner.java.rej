@@ -1,0 +1,23 @@
+*** com/mojang/minecraft/level/MobSpawner.java	2013-07-15 21:08:36.000000000 -0700
+--- com/mojang/minecraft/level/MobSpawner.java	2013-07-15 19:59:35.328457000 -0700
+***************
+*** 44,52 ****
+                    var12 += this.level.random.nextInt(1) - this.level.random.nextInt(1);
+                    var13 += this.level.random.nextInt(6) - this.level.random.nextInt(6);
+                    if(var11 >= 0 && var13 >= 1 && var12 >= 0 && var12 < this.level.depth - 2 && var11 < this.level.width && var13 < this.level.height && this.level.isSolidTile(var11, var12 - 1, var13) && !this.level.isSolidTile(var11, var12, var13) && !this.level.isSolidTile(var11, var12 + 1, var13)) {
+!                      float var15 = (float)var11 + 0.5F;
+!                      float var16 = (float)var12 + 1.0F;
+!                      float var17 = (float)var13 + 0.5F;
+                       float var19;
+                       float var18;
+                       float var20;
+--- 44,52 ----
+                    var12 += this.level.random.nextInt(1) - this.level.random.nextInt(1);
+                    var13 += this.level.random.nextInt(6) - this.level.random.nextInt(6);
+                    if(var11 >= 0 && var13 >= 1 && var12 >= 0 && var12 < this.level.depth - 2 && var11 < this.level.width && var13 < this.level.height && this.level.isSolidTile(var11, var12 - 1, var13) && !this.level.isSolidTile(var11, var12, var13) && !this.level.isSolidTile(var11, var12 + 1, var13)) {
+!                      float var15 = var11 + 0.5F;
+!                      float var16 = var12 + 1.0F;
+!                      float var17 = var13 + 0.5F;
+                       float var19;
+                       float var18;
+                       float var20;

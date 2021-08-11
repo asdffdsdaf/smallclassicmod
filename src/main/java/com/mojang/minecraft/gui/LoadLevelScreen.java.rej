@@ -1,0 +1,27 @@
+*** com/mojang/minecraft/gui/LoadLevelScreen.java	2013-07-15 21:08:30.000000000 -0700
+--- com/mojang/minecraft/gui/LoadLevelScreen.java	2013-07-15 19:59:35.328457000 -0700
+***************
+*** 107,119 ****
+     protected void openLevel(File var1) {
+        File var2 = var1;
+        Minecraft var4 = this.minecraft;
+!       Level var5;
+!       boolean var10000;
+!       if((var5 = this.minecraft.levelIo.load(var2)) == null) {
+!          var10000 = false;
+!       } else {
+           var4.setLevel(var5);
+-          var10000 = true;
+        }
+  
+        this.minecraft.setCurrentScreen(this.parent);
+--- 107,115 ----
+     protected void openLevel(File var1) {
+        File var2 = var1;
+        Minecraft var4 = this.minecraft;
+!       Level var5 = this.minecraft.levelIo.load(var2);
+!       if(var5 != null) {
+           var4.setLevel(var5);
+        }
+  
+        this.minecraft.setCurrentScreen(this.parent);

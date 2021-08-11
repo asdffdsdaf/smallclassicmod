@@ -1,0 +1,708 @@
+*** com/mojang/minecraft/Minecraft.java	2013-07-15 21:08:34.000000000 -0700
+--- com/mojang/minecraft/Minecraft.java	2013-07-15 20:56:39.204430000 -0700
+***************
+*** 494,500 ****
+                             var91 = -1;
+                          }
+  
+!                         var66.minecraft.player.turn((float)var81, (float)(var86 * var91));
+                       }
+  
+                       if(!var66.minecraft.online) {
+--- 471,477 ----
+                             var91 = -1;
+                          }
+  
+!                         var66.minecraft.player.turn(var81, var86 * var91);
+                       }
+  
+                       if(!var66.minecraft.online) {
+***************
+*** 533,544 ****
+  
+                             var71 = var31.add(var34 * var36, var33 * var36, var87 * var36);
+                             var66.entity = null;
+!                            List var37 = var66.minecraft.level.blockMap.getEntities(var28, var28.bb.expand(var34 * var36, var33 * var36, var87 * var36));
+                             float var35 = 0.0F;
+  
+                             for(var81 = 0; var81 < var37.size(); ++var81) {
+                                Entity var88;
+!                               if((var88 = (Entity)var37.get(var81)).isPickable()) {
+                                   var74 = 0.1F;
+                                   MovingObjectPosition var78;
+                                   if((var78 = var88.bb.grow(var74, var74, var74).clip(var31, var71)) != null && ((var74 = var31.distance(var78.vec)) < var35 || var35 == 0.0F)) {
+--- 510,521 ----
+  
+                             var71 = var31.add(var34 * var36, var33 * var36, var87 * var36);
+                             var66.entity = null;
+!                            List<Entity> var37 = var66.minecraft.level.blockMap.getEntities(var28, var28.bb.expand(var34 * var36, var33 * var36, var87 * var36));
+                             float var35 = 0.0F;
+  
+                             for(var81 = 0; var81 < var37.size(); ++var81) {
+                                Entity var88;
+!                               if((var88 = var37.get(var81)).isPickable()) {
+                                   var74 = 0.1F;
+                                   MovingObjectPosition var78;
+                                   if((var78 = var88.bb.grow(var74, var74, var74).clip(var31, var71)) != null && ((var74 = var31.distance(var78.vec)) < var35 || var35 == 0.0F)) {
+***************
+*** 575,588 ****
+                                GL11.glViewport(0, 0, var82.minecraft.width, var82.minecraft.height);
+                                Level var26 = var82.minecraft.level;
+                                var28 = var82.minecraft.player;
+!                               var29 = 1.0F / (float)(4 - var82.minecraft.settings.viewDistance);
+!                               var29 = 1.0F - (float)Math.pow((double)var29, 0.25D);
+!                               var30 = (float)(var26.skyColor >> 16 & 255) / 255.0F;
+!                               float var117 = (float)(var26.skyColor >> 8 & 255) / 255.0F;
+!                               var32 = (float)(var26.skyColor & 255) / 255.0F;
+!                               var82.fogRed = (float)(var26.fogColor >> 16 & 255) / 255.0F;
+!                               var82.fogBlue = (float)(var26.fogColor >> 8 & 255) / 255.0F;
+!                               var82.fogGreen = (float)(var26.fogColor & 255) / 255.0F;
+                                var82.fogRed += (var30 - var82.fogRed) * var29;
+                                var82.fogBlue += (var117 - var82.fogBlue) * var29;
+                                var82.fogGreen += (var32 - var82.fogGreen) * var29;
+--- 552,565 ----
+                                GL11.glViewport(0, 0, var82.minecraft.width, var82.minecraft.height);
+                                Level var26 = var82.minecraft.level;
+                                var28 = var82.minecraft.player;
+!                               var29 = 1.0F / (4 - var82.minecraft.settings.viewDistance);
+!                               var29 = 1.0F - (float)Math.pow(var29, 0.25D);
+!                               var30 = (var26.skyColor >> 16 & 255) / 255.0F;
+!                               float var117 = (var26.skyColor >> 8 & 255) / 255.0F;
+!                               var32 = (var26.skyColor & 255) / 255.0F;
+!                               var82.fogRed = (var26.fogColor >> 16 & 255) / 255.0F;
+!                               var82.fogBlue = (var26.fogColor >> 8 & 255) / 255.0F;
+!                               var82.fogGreen = (var26.fogColor & 255) / 255.0F;
+                                var82.fogRed += (var30 - var82.fogRed) * var29;
+                                var82.fogBlue += (var117 - var82.fogBlue) * var29;
+                                var82.fogGreen += (var32 - var82.fogGreen) * var29;
+***************
+*** 616,633 ****
+                                GL11.glClear(16640);
+                                var82.fogColorMultiplier = 1.0F;
+                                GL11.glEnable(2884);
+!                               var82.fogEnd = (float)(512 >> (var82.minecraft.settings.viewDistance << 1));
+                                GL11.glMatrixMode(5889);
+                                GL11.glLoadIdentity();
+                                var29 = 0.07F;
+                                if(var82.minecraft.settings.anaglyph) {
+!                                  GL11.glTranslatef((float)(-((var77 << 1) - 1)) * var29, 0.0F, 0.0F);
+                                }
+  
+                                Player var116 = var82.minecraft.player;
+                                var69 = 70.0F;
+                                if(var116.health <= 0) {
+!                                  var74 = (float)var116.deathTime + var80;
+                                   var69 /= (1.0F - 500.0F / (var74 + 500.0F)) * 2.0F + 1.0F;
+                                }
+  
+--- 593,610 ----
+                                GL11.glClear(16640);
+                                var82.fogColorMultiplier = 1.0F;
+                                GL11.glEnable(2884);
+!                               var82.fogEnd = 512 >> (var82.minecraft.settings.viewDistance << 1);
+                                GL11.glMatrixMode(5889);
+                                GL11.glLoadIdentity();
+                                var29 = 0.07F;
+                                if(var82.minecraft.settings.anaglyph) {
+!                                  GL11.glTranslatef((-((var77 << 1) - 1)) * var29, 0.0F, 0.0F);
+                                }
+  
+                                Player var116 = var82.minecraft.player;
+                                var69 = 70.0F;
+                                if(var116.health <= 0) {
+!                                  var74 = var116.deathTime + var80;
+                                   var69 /= (1.0F - 500.0F / (var74 + 500.0F)) * 2.0F + 1.0F;
+                                }
+  
+***************
+*** 635,641 ****
+                                GL11.glMatrixMode(5888);
+                                GL11.glLoadIdentity();
+                                if(var82.minecraft.settings.anaglyph) {
+!                                  GL11.glTranslatef((float)((var77 << 1) - 1) * 0.1F, 0.0F, 0.0F);
+                                }
+  
+                                var82.hurtEffect(var80);
+--- 612,618 ----
+                                GL11.glMatrixMode(5888);
+                                GL11.glLoadIdentity();
+                                if(var82.minecraft.settings.anaglyph) {
+!                                  GL11.glTranslatef(((var77 << 1) - 1) * 0.1F, 0.0F, 0.0F);
+                                }
+  
+                                var82.hurtEffect(var80);
+***************
+*** 671,677 ****
+                                int var104;
+                                for(var104 = 0; var104 < var105; ++var104) {
+                                   Chunk var118;
+!                                  (var118 = (Chunk)var101.chunks.remove(var98 - var104)).update();
+                                   var118.loaded = false;
+                                }
+  
+--- 648,654 ----
+                                int var104;
+                                for(var104 = 0; var104 < var105; ++var104) {
+                                   Chunk var118;
+!                                  (var118 = var101.chunks.remove(var98 - var104)).update();
+                                   var118.loaded = false;
+                                }
+  
+***************
+*** 751,757 ****
+                                      ShapeRenderer.instance.begin();
+  
+                                      for(var120 = 0; var120 < var96.particles[var83].size(); ++var120) {
+!                                        ((Particle)var96.particles[var83].get(var120)).render(var121, var107, var29, var69, var30, var117, var32);
+                                      }
+  
+                                      var121.end();
+--- 728,734 ----
+                                      ShapeRenderer.instance.begin();
+  
+                                      for(var120 = 0; var120 < var96.particles[var83].size(); ++var120) {
+!                                        var96.particles[var83].get(var120).render(var121, var107, var29, var69, var30, var117, var32);
+                                      }
+  
+                                      var121.end();
+***************
+*** 765,773 ****
+                                var101 = var89;
+                                GL11.glBindTexture(3553, var89.textureManager.load("/clouds.png"));
+                                GL11.glColor4f(1.0F, 1.0F, 1.0F, 1.0F);
+!                               var107 = (float)(var89.level.cloudColor >> 16 & 255) / 255.0F;
+!                               var29 = (float)(var89.level.cloudColor >> 8 & 255) / 255.0F;
+!                               var30 = (float)(var89.level.cloudColor & 255) / 255.0F;
+                                if(var89.minecraft.settings.anaglyph) {
+                                   var117 = (var107 * 30.0F + var29 * 59.0F + var30 * 11.0F) / 100.0F;
+                                   var32 = (var107 * 30.0F + var29 * 70.0F) / 100.0F;
+--- 742,750 ----
+                                var101 = var89;
+                                GL11.glBindTexture(3553, var89.textureManager.load("/clouds.png"));
+                                GL11.glColor4f(1.0F, 1.0F, 1.0F, 1.0F);
+!                               var107 = (var89.level.cloudColor >> 16 & 255) / 255.0F;
+!                               var29 = (var89.level.cloudColor >> 8 & 255) / 255.0F;
+!                               var30 = (var89.level.cloudColor & 255) / 255.0F;
+                                if(var89.minecraft.settings.anaglyph) {
+                                   var117 = (var107 * 30.0F + var29 * 59.0F + var30 * 11.0F) / 100.0F;
+                                   var32 = (var107 * 30.0F + var29 * 70.0F) / 100.0F;
+***************
+*** 780,810 ****
+                                var115 = ShapeRenderer.instance;
+                                var74 = 0.0F;
+                                var33 = 4.8828125E-4F;
+!                               var74 = (float)(var89.level.depth + 2);
+!                               var34 = ((float)var89.ticks + var80) * var33 * 0.03F;
+                                var35 = 0.0F;
+                                var115.begin();
+                                var115.color(var107, var29, var30);
+  
+                                for(var86 = -2048; var86 < var101.level.width + 2048; var86 += 512) {
+                                   for(var125 = -2048; var125 < var101.level.height + 2048; var125 += 512) {
+!                                     var115.vertexUV((float)var86, var74, (float)(var125 + 512), (float)var86 * var33 + var34, (float)(var125 + 512) * var33);
+!                                     var115.vertexUV((float)(var86 + 512), var74, (float)(var125 + 512), (float)(var86 + 512) * var33 + var34, (float)(var125 + 512) * var33);
+!                                     var115.vertexUV((float)(var86 + 512), var74, (float)var125, (float)(var86 + 512) * var33 + var34, (float)var125 * var33);
+!                                     var115.vertexUV((float)var86, var74, (float)var125, (float)var86 * var33 + var34, (float)var125 * var33);
+!                                     var115.vertexUV((float)var86, var74, (float)var125, (float)var86 * var33 + var34, (float)var125 * var33);
+!                                     var115.vertexUV((float)(var86 + 512), var74, (float)var125, (float)(var86 + 512) * var33 + var34, (float)var125 * var33);
+!                                     var115.vertexUV((float)(var86 + 512), var74, (float)(var125 + 512), (float)(var86 + 512) * var33 + var34, (float)(var125 + 512) * var33);
+!                                     var115.vertexUV((float)var86, var74, (float)(var125 + 512), (float)var86 * var33 + var34, (float)(var125 + 512) * var33);
+                                   }
+                                }
+  
+                                var115.end();
+                                GL11.glDisable(3553);
+                                var115.begin();
+!                               var34 = (float)(var101.level.skyColor >> 16 & 255) / 255.0F;
+!                               var35 = (float)(var101.level.skyColor >> 8 & 255) / 255.0F;
+!                               var87 = (float)(var101.level.skyColor & 255) / 255.0F;
+                                if(var101.minecraft.settings.anaglyph) {
+                                   var36 = (var34 * 30.0F + var35 * 59.0F + var87 * 11.0F) / 100.0F;
+                                   var69 = (var34 * 30.0F + var35 * 70.0F) / 100.0F;
+--- 757,787 ----
+                                var115 = ShapeRenderer.instance;
+                                var74 = 0.0F;
+                                var33 = 4.8828125E-4F;
+!                               var74 = var89.level.depth + 2;
+!                               var34 = (var89.ticks + var80) * var33 * 0.03F;
+                                var35 = 0.0F;
+                                var115.begin();
+                                var115.color(var107, var29, var30);
+  
+                                for(var86 = -2048; var86 < var101.level.width + 2048; var86 += 512) {
+                                   for(var125 = -2048; var125 < var101.level.height + 2048; var125 += 512) {
+!                                     var115.vertexUV(var86, var74, var125 + 512, var86 * var33 + var34, (var125 + 512) * var33);
+!                                     var115.vertexUV(var86 + 512, var74, var125 + 512, (var86 + 512) * var33 + var34, (var125 + 512) * var33);
+!                                     var115.vertexUV(var86 + 512, var74, var125, (var86 + 512) * var33 + var34, var125 * var33);
+!                                     var115.vertexUV(var86, var74, var125, var86 * var33 + var34, var125 * var33);
+!                                     var115.vertexUV(var86, var74, var125, var86 * var33 + var34, var125 * var33);
+!                                     var115.vertexUV(var86 + 512, var74, var125, (var86 + 512) * var33 + var34, var125 * var33);
+!                                     var115.vertexUV(var86 + 512, var74, var125 + 512, (var86 + 512) * var33 + var34, (var125 + 512) * var33);
+!                                     var115.vertexUV(var86, var74, var125 + 512, var86 * var33 + var34, (var125 + 512) * var33);
+                                   }
+                                }
+  
+                                var115.end();
+                                GL11.glDisable(3553);
+                                var115.begin();
+!                               var34 = (var101.level.skyColor >> 16 & 255) / 255.0F;
+!                               var35 = (var101.level.skyColor >> 8 & 255) / 255.0F;
+!                               var87 = (var101.level.skyColor & 255) / 255.0F;
+                                if(var101.minecraft.settings.anaglyph) {
+                                   var36 = (var34 * 30.0F + var35 * 59.0F + var87 * 11.0F) / 100.0F;
+                                   var69 = (var34 * 30.0F + var35 * 70.0F) / 100.0F;
+***************
+*** 815,828 ****
+                                }
+  
+                                var115.color(var34, var35, var87);
+!                               var74 = (float)(var101.level.depth + 10);
+  
+                                for(var125 = -2048; var125 < var101.level.width + 2048; var125 += 512) {
+                                   for(var68 = -2048; var68 < var101.level.height + 2048; var68 += 512) {
+!                                     var115.vertex((float)var125, var74, (float)var68);
+!                                     var115.vertex((float)(var125 + 512), var74, (float)var68);
+!                                     var115.vertex((float)(var125 + 512), var74, (float)(var68 + 512));
+!                                     var115.vertex((float)var125, var74, (float)(var68 + 512));
+                                   }
+                                }
+  
+--- 792,805 ----
+                                }
+  
+                                var115.color(var34, var35, var87);
+!                               var74 = var101.level.depth + 10;
+  
+                                for(var125 = -2048; var125 < var101.level.width + 2048; var125 += 512) {
+                                   for(var68 = -2048; var68 < var101.level.height + 2048; var68 += 512) {
+!                                     var115.vertex(var125, var74, var68);
+!                                     var115.vertex(var125 + 512, var74, var68);
+!                                     var115.vertex(var125 + 512, var74, var68 + 512);
+!                                     var115.vertex(var125, var74, var68 + 512);
+                                   }
+                                }
+  
+***************
+*** 832,868 ****
+                                int var108;
+                                if(var82.minecraft.selected != null) {
+                                   GL11.glDisable(3008);
+-                                  MovingObjectPosition var10001 = var82.minecraft.selected;
+                                   var105 = var126.inventory.getSelected();
+!                                  boolean var106 = false;
+!                                  MovingObjectPosition var102 = var10001;
+                                   var101 = var89;
+                                   ShapeRenderer var113 = ShapeRenderer.instance;
+                                   GL11.glEnable(3042);
+                                   GL11.glEnable(3008);
+                                   GL11.glBlendFunc(770, 1);
+!                                  GL11.glColor4f(1.0F, 1.0F, 1.0F, (MathHelper.sin((float)System.currentTimeMillis() / 100.0F) * 0.2F + 0.4F) * 0.5F);
+                                   if(var89.cracks > 0.0F) {
+                                      GL11.glBlendFunc(774, 768);
+                                      var108 = var89.textureManager.load("/terrain.png");
+                                      GL11.glBindTexture(3553, var108);
+                                      GL11.glColor4f(1.0F, 1.0F, 1.0F, 0.5F);
+                                      GL11.glPushMatrix();
+!                                     Block var10000 = (var114 = var89.level.getTile(var102.x, var102.y, var102.z)) > 0?Block.blocks[var114]:null;
+!                                     var73 = var10000;
+!                                     var74 = (var10000.x1 + var73.x2) / 2.0F;
+                                      var33 = (var73.y1 + var73.y2) / 2.0F;
+                                      var34 = (var73.z1 + var73.z2) / 2.0F;
+!                                     GL11.glTranslatef((float)var102.x + var74, (float)var102.y + var33, (float)var102.z + var34);
+                                      var35 = 1.01F;
+                                      GL11.glScalef(1.01F, var35, var35);
+!                                     GL11.glTranslatef(-((float)var102.x + var74), -((float)var102.y + var33), -((float)var102.z + var34));
+                                      var113.begin();
+                                      var113.noColor();
+                                      GL11.glDepthMask(false);
+-                                     if(var73 == null) {
+-                                        var73 = Block.STONE;
+-                                     }
+  
+                                      for(var86 = 0; var86 < 6; ++var86) {
+                                         var73.renderSide(var113, var102.x, var102.y, var102.z, var86, 240 + (int)(var101.cracks * 10.0F));
+--- 809,843 ----
+                                int var108;
+                                if(var82.minecraft.selected != null) {
+                                   GL11.glDisable(3008);
+                                   var105 = var126.inventory.getSelected();
+!                                  MovingObjectPosition var102 = var82.minecraft.selected;
+                                   var101 = var89;
+                                   ShapeRenderer var113 = ShapeRenderer.instance;
+                                   GL11.glEnable(3042);
+                                   GL11.glEnable(3008);
+                                   GL11.glBlendFunc(770, 1);
+!                                  GL11.glColor4f(1.0F, 1.0F, 1.0F, (MathHelper.sin(System.currentTimeMillis() / 100.0F) * 0.2F + 0.4F) * 0.5F);
+                                   if(var89.cracks > 0.0F) {
+                                      GL11.glBlendFunc(774, 768);
+                                      var108 = var89.textureManager.load("/terrain.png");
+                                      GL11.glBindTexture(3553, var108);
+                                      GL11.glColor4f(1.0F, 1.0F, 1.0F, 0.5F);
+                                      GL11.glPushMatrix();
+!                                     var73 = (var114 = var89.level.getTile(var102.x, var102.y, var102.z)) > 0?Block.blocks[var114]:null;
+!                                     if(var73 == null) {
+!                                         var73 = Block.STONE;
+!                                      }
+!                                     
+!                                     var74 = (var73.x1 + var73.x2) / 2.0F;
+                                      var33 = (var73.y1 + var73.y2) / 2.0F;
+                                      var34 = (var73.z1 + var73.z2) / 2.0F;
+!                                     GL11.glTranslatef(var102.x + var74, var102.y + var33, var102.z + var34);
+                                      var35 = 1.01F;
+                                      GL11.glScalef(1.01F, var35, var35);
+!                                     GL11.glTranslatef(-(var102.x + var74), -(var102.y + var33), -(var102.z + var34));
+                                      var113.begin();
+                                      var113.noColor();
+                                      GL11.glDepthMask(false);
+  
+                                      for(var86 = 0; var86 < 6; ++var86) {
+                                         var73.renderSide(var113, var102.x, var102.y, var102.z, var86, 240 + (int)(var101.cracks * 10.0F));
+***************
+*** 875,884 ****
+  
+                                   GL11.glDisable(3042);
+                                   GL11.glDisable(3008);
+!                                  var10001 = var82.minecraft.selected;
+                                   var126.inventory.getSelected();
+-                                  var106 = false;
+-                                  var102 = var10001;
+                                   GL11.glEnable(3042);
+                                   GL11.glBlendFunc(770, 771);
+                                   GL11.glColor4f(0.0F, 0.0F, 0.0F, 0.4F);
+--- 850,857 ----
+  
+                                   GL11.glDisable(3042);
+                                   GL11.glDisable(3008);
+!                                  var102 = var82.minecraft.selected;
+                                   var126.inventory.getSelected();
+                                   GL11.glEnable(3042);
+                                   GL11.glBlendFunc(770, 771);
+                                   GL11.glColor4f(0.0F, 0.0F, 0.0F, 0.4F);
+***************
+*** 976,995 ****
+                                         }
+  
+                                         if(var86 != var125) {
+!                                           var74 = ((float)((var27.levelTicks + var110 * 3121 + var122 * 418711) % 32) + var97) / 32.0F;
+!                                           float var124 = (float)var110 + 0.5F - var28.x;
+!                                           var35 = (float)var122 + 0.5F - var28.z;
+!                                           float var92 = MathHelper.sqrt(var124 * var124 + var35 * var35) / (float)5;
+                                            GL11.glColor4f(1.0F, 1.0F, 1.0F, (1.0F - var92 * var92) * 0.7F);
+                                            var84.begin();
+!                                           var84.vertexUV((float)var110, (float)var86, (float)var122, 0.0F, (float)var86 * 2.0F / 8.0F + var74 * 2.0F);
+!                                           var84.vertexUV((float)(var110 + 1), (float)var86, (float)(var122 + 1), 2.0F, (float)var86 * 2.0F / 8.0F + var74 * 2.0F);
+!                                           var84.vertexUV((float)(var110 + 1), (float)var125, (float)(var122 + 1), 2.0F, (float)var125 * 2.0F / 8.0F + var74 * 2.0F);
+!                                           var84.vertexUV((float)var110, (float)var125, (float)var122, 0.0F, (float)var125 * 2.0F / 8.0F + var74 * 2.0F);
+!                                           var84.vertexUV((float)var110, (float)var86, (float)(var122 + 1), 0.0F, (float)var86 * 2.0F / 8.0F + var74 * 2.0F);
+!                                           var84.vertexUV((float)(var110 + 1), (float)var86, (float)var122, 2.0F, (float)var86 * 2.0F / 8.0F + var74 * 2.0F);
+!                                           var84.vertexUV((float)(var110 + 1), (float)var125, (float)var122, 2.0F, (float)var125 * 2.0F / 8.0F + var74 * 2.0F);
+!                                           var84.vertexUV((float)var110, (float)var125, (float)(var122 + 1), 0.0F, (float)var125 * 2.0F / 8.0F + var74 * 2.0F);
+                                            var84.end();
+                                         }
+                                      }
+--- 949,968 ----
+                                         }
+  
+                                         if(var86 != var125) {
+!                                           var74 = ((var27.levelTicks + var110 * 3121 + var122 * 418711) % 32 + var97) / 32.0F;
+!                                           float var124 = var110 + 0.5F - var28.x;
+!                                           var35 = var122 + 0.5F - var28.z;
+!                                           float var92 = MathHelper.sqrt(var124 * var124 + var35 * var35) / 5;
+                                            GL11.glColor4f(1.0F, 1.0F, 1.0F, (1.0F - var92 * var92) * 0.7F);
+                                            var84.begin();
+!                                           var84.vertexUV(var110, var86, var122, 0.0F, var86 * 2.0F / 8.0F + var74 * 2.0F);
+!                                           var84.vertexUV(var110 + 1, var86, var122 + 1, 2.0F, var86 * 2.0F / 8.0F + var74 * 2.0F);
+!                                           var84.vertexUV(var110 + 1, var125, var122 + 1, 2.0F, var125 * 2.0F / 8.0F + var74 * 2.0F);
+!                                           var84.vertexUV(var110, var125, var122, 0.0F, var125 * 2.0F / 8.0F + var74 * 2.0F);
+!                                           var84.vertexUV(var110, var86, var122 + 1, 0.0F, var86 * 2.0F / 8.0F + var74 * 2.0F);
+!                                           var84.vertexUV(var110 + 1, var86, var122, 2.0F, var86 * 2.0F / 8.0F + var74 * 2.0F);
+!                                           var84.vertexUV(var110 + 1, var125, var122, 2.0F, var125 * 2.0F / 8.0F + var74 * 2.0F);
+!                                           var84.vertexUV(var110, var125, var122 + 1, 0.0F, var125 * 2.0F / 8.0F + var74 * 2.0F);
+                                            var84.end();
+                                         }
+                                      }
+***************
+*** 1006,1012 ****
+                                GL11.glClear(256);
+                                GL11.glLoadIdentity();
+                                if(var82.minecraft.settings.anaglyph) {
+!                                  GL11.glTranslatef((float)((var77 << 1) - 1) * 0.1F, 0.0F, 0.0F);
+                                }
+  
+                                var82.hurtEffect(var80);
+--- 979,985 ----
+                                GL11.glClear(256);
+                                GL11.glLoadIdentity();
+                                if(var82.minecraft.settings.anaglyph) {
+!                                  GL11.glTranslatef(((var77 << 1) - 1) * 0.1F, 0.0F, 0.0F);
+                                }
+  
+                                var82.hurtEffect(var80);
+***************
+*** 1025,1031 ****
+                                GL11.glPushMatrix();
+                                var69 = 0.8F;
+                                if(var112.moving) {
+!                                  var33 = MathHelper.sin((var74 = ((float)var112.offset + var80) / 7.0F) * 3.1415927F);
+                                   GL11.glTranslatef(-MathHelper.sin(MathHelper.sqrt(var74) * 3.1415927F) * 0.4F, MathHelper.sin(MathHelper.sqrt(var74) * 3.1415927F * 2.0F) * 0.2F, -var33 * 0.2F);
+                                }
+  
+--- 998,1004 ----
+                                GL11.glPushMatrix();
+                                var69 = 0.8F;
+                                if(var112.moving) {
+!                                  var33 = MathHelper.sin((var74 = (var112.offset + var80) / 7.0F) * 3.1415927F);
+                                   GL11.glTranslatef(-MathHelper.sin(MathHelper.sqrt(var74) * 3.1415927F) * 0.4F, MathHelper.sin(MathHelper.sqrt(var74) * 3.1415927F * 2.0F) * 0.2F, -var33 * 0.2F);
+                                }
+  
+***************
+*** 1033,1039 ****
+                                GL11.glRotatef(45.0F, 0.0F, 1.0F, 0.0F);
+                                GL11.glEnable(2977);
+                                if(var112.moving) {
+!                                  var33 = MathHelper.sin((var74 = ((float)var112.offset + var80) / 7.0F) * var74 * 3.1415927F);
+                                   GL11.glRotatef(MathHelper.sin(MathHelper.sqrt(var74) * 3.1415927F) * 80.0F, 0.0F, 1.0F, 0.0F);
+                                   GL11.glRotatef(-var33 * 20.0F, 1.0F, 0.0F, 0.0F);
+                                }
+--- 1006,1012 ----
+                                GL11.glRotatef(45.0F, 0.0F, 1.0F, 0.0F);
+                                GL11.glEnable(2977);
+                                if(var112.moving) {
+!                                  var33 = MathHelper.sin((var74 = (var112.offset + var80) / 7.0F) * var74 * 3.1415927F);
+                                   GL11.glRotatef(MathHelper.sin(MathHelper.sqrt(var74) * 3.1415927F) * 80.0F, 0.0F, 1.0F, 0.0F);
+                                   GL11.glRotatef(-var33 * 20.0F, 1.0F, 0.0F, 0.0F);
+                                }
+***************
+*** 1114,1120 ****
+  
+           return;
+        } catch (StopGameException var59) {
+-          return;
+        } catch (Exception var60) {
+           var60.printStackTrace();
+        } finally {
+--- 1087,1092 ----
+  
+           return;
+        } catch (StopGameException var59) {
+        } catch (Exception var60) {
+           var60.printStackTrace();
+        } finally {
+***************
+*** 1264,1270 ****
+  
+        for(var16 = 0; var16 < var19.animations.size(); ++var16) {
+           AnimatedTexture var3;
+!          (var3 = (AnimatedTexture)var19.animations.get(var16)).anaglyph = var19.settings.anaglyph;
+           var3.animate();
+           var19.textureBuffer.clear();
+           var19.textureBuffer.put(var3.textureData);
+--- 1236,1242 ----
+  
+        for(var16 = 0; var16 < var19.animations.size(); ++var16) {
+           AnimatedTexture var3;
+!          (var3 = var19.animations.get(var16)).anaglyph = var19.settings.anaglyph;
+           var3.animate();
+           var19.textureBuffer.clear();
+           var19.textureBuffer.put(var3.textureData);
+***************
+*** 1284,1290 ****
+           } else {
+              NetworkManager var20 = this.networkManager;
+              if(this.networkManager.successful) {
+-                NetworkHandler var18 = var20.netHandler;
+                 if(var20.netHandler.connected) {
+                    try {
+                       NetworkHandler var22 = var20.netHandler;
+--- 1256,1261 ----
+           } else {
+              NetworkManager var20 = this.networkManager;
+              if(this.networkManager.successful) {
+                 if(var20.netHandler.connected) {
+                    try {
+                       NetworkHandler var22 = var20.netHandler;
+***************
+*** 1374,1385 ****
+                                   if(var5 >= 0) {
+                                      var9 = (byte)(var9 + 128);
+                                      var47 = (short)(var47 - 22);
+!                                     var33 = new NetworkPlayer(var42.minecraft, var5, var34, var36, var47, var10, (float)(var9 * 360) / 256.0F, (float)(var58 * 360) / 256.0F);
+                                      var42.players.put(Byte.valueOf(var5), var33);
+                                      var42.minecraft.level.addEntity(var33);
+                                   } else {
+!                                     var42.minecraft.level.setSpawnPos(var36 / 32, var47 / 32, var10 / 32, (float)(var9 * 320 / 256));
+!                                     var42.minecraft.player.moveTo((float)var36 / 32.0F, (float)var47 / 32.0F, (float)var10 / 32.0F, (float)(var9 * 360) / 256.0F, (float)(var58 * 360) / 256.0F);
+                                   }
+                                } else {
+                                   byte var53;
+--- 1345,1356 ----
+                                   if(var5 >= 0) {
+                                      var9 = (byte)(var9 + 128);
+                                      var47 = (short)(var47 - 22);
+!                                     var33 = new NetworkPlayer(var42.minecraft, var5, var34, var36, var47, var10, var9 * 360 / 256.0F, var58 * 360 / 256.0F);
+                                      var42.players.put(Byte.valueOf(var5), var33);
+                                      var42.minecraft.level.addEntity(var33);
+                                   } else {
+!                                     var42.minecraft.level.setSpawnPos(var36 / 32, var47 / 32, var10 / 32, var9 * 320 / 256);
+!                                     var42.minecraft.player.moveTo(var36 / 32.0F, var47 / 32.0F, var10 / 32.0F, var9 * 360 / 256.0F, var58 * 360 / 256.0F);
+                                   }
+                                } else {
+                                   byte var53;
+***************
+*** 1398,1409 ****
+                                      short var38 = var66;
+                                      var5 = var10001;
+                                      if(var5 < 0) {
+!                                        var42.minecraft.player.moveTo((float)var38 / 32.0F, (float)var36 / 32.0F, (float)var47 / 32.0F, (float)(var53 * 360) / 256.0F, (float)(var9 * 360) / 256.0F);
+                                      } else {
+                                         var53 = (byte)(var53 + 128);
+                                         var36 = (short)(var36 - 22);
+!                                        if((var61 = (NetworkPlayer)var42.players.get(Byte.valueOf(var5))) != null) {
+!                                           var61.teleport(var38, var36, var47, (float)(var53 * 360) / 256.0F, (float)(var9 * 360) / 256.0F);
+                                         }
+                                      }
+                                   } else {
+--- 1369,1380 ----
+                                      short var38 = var66;
+                                      var5 = var10001;
+                                      if(var5 < 0) {
+!                                        var42.minecraft.player.moveTo(var38 / 32.0F, var36 / 32.0F, var47 / 32.0F, var53 * 360 / 256.0F, var9 * 360 / 256.0F);
+                                      } else {
+                                         var53 = (byte)(var53 + 128);
+                                         var36 = (short)(var36 - 22);
+!                                        if((var61 = var42.players.get(Byte.valueOf(var5))) != null) {
+!                                           var61.teleport(var38, var36, var47, var53 * 360 / 256.0F, var9 * 360 / 256.0F);
+                                         }
+                                      }
+                                   } else {
+***************
+*** 1426,1433 ****
+                                         var5 = var10001;
+                                         if(var5 >= 0) {
+                                            var53 = (byte)(var53 + 128);
+!                                           if((var61 = (NetworkPlayer)var42.players.get(Byte.valueOf(var5))) != null) {
+!                                              var61.queue(var37, var44, var49, (float)(var53 * 360) / 256.0F, (float)(var9 * 360) / 256.0F);
+                                            }
+                                         }
+                                      } else if(var6 == PacketType.ROTATION_UPDATE) {
+--- 1397,1404 ----
+                                         var5 = var10001;
+                                         if(var5 >= 0) {
+                                            var53 = (byte)(var53 + 128);
+!                                           if((var61 = var42.players.get(Byte.valueOf(var5))) != null) {
+!                                              var61.queue(var37, var44, var49, var53 * 360 / 256.0F, var9 * 360 / 256.0F);
+                                            }
+                                         }
+                                      } else if(var6 == PacketType.ROTATION_UPDATE) {
+***************
+*** 1439,1446 ****
+                                         if(var5 >= 0) {
+                                            var37 = (byte)(var37 + 128);
+                                            NetworkPlayer var54;
+!                                           if((var54 = (NetworkPlayer)var42.players.get(Byte.valueOf(var5))) != null) {
+!                                              var54.queue((float)(var37 * 360) / 256.0F, (float)(var44 * 360) / 256.0F);
+                                            }
+                                         }
+                                      } else if(var6 == PacketType.POSITION_UPDATE) {
+--- 1410,1417 ----
+                                         if(var5 >= 0) {
+                                            var37 = (byte)(var37 + 128);
+                                            NetworkPlayer var54;
+!                                           if((var54 = var42.players.get(Byte.valueOf(var5))) != null) {
+!                                              var54.queue(var37 * 360 / 256.0F, var44 * 360 / 256.0F);
+                                            }
+                                         }
+                                      } else if(var6 == PacketType.POSITION_UPDATE) {
+***************
+*** 1452,1463 ****
+                                         var37 = var67;
+                                         var5 = var10001;
+                                         NetworkPlayer var59;
+!                                        if(var5 >= 0 && (var59 = (NetworkPlayer)var42.players.get(Byte.valueOf(var5))) != null) {
+                                            var59.queue(var37, var44, var49);
+                                         }
+                                      } else if(var6 == PacketType.DESPAWN_PLAYER) {
+                                         var5 = ((Byte)var7[0]).byteValue();
+!                                        if(var5 >= 0 && (var33 = (NetworkPlayer)var42.players.remove(Byte.valueOf(var5))) != null) {
+                                            var33.clear();
+                                            var42.minecraft.level.removeEntity(var33);
+                                         }
+--- 1423,1434 ----
+                                         var37 = var67;
+                                         var5 = var10001;
+                                         NetworkPlayer var59;
+!                                        if(var5 >= 0 && (var59 = var42.players.get(Byte.valueOf(var5))) != null) {
+                                            var59.queue(var37, var44, var49);
+                                         }
+                                      } else if(var6 == PacketType.DESPAWN_PLAYER) {
+                                         var5 = ((Byte)var7[0]).byteValue();
+!                                        if(var5 >= 0 && (var33 = var42.players.remove(Byte.valueOf(var5))) != null) {
+                                            var33.clear();
+                                            var42.minecraft.level.removeEntity(var33);
+                                         }
+***************
+*** 1625,1643 ****
+           }
+  
+           if(this.currentScreen == null) {
+!             if(Mouse.isButtonDown(0) && (float)(this.ticks - this.lastClick) >= this.timer.tps / 4.0F && this.hasMouse) {
+                 this.onMouseClick(0);
+                 this.lastClick = this.ticks;
+              }
+  
+!             if(Mouse.isButtonDown(1) && (float)(this.ticks - this.lastClick) >= this.timer.tps / 4.0F && this.hasMouse) {
+                 this.onMouseClick(1);
+                 this.lastClick = this.ticks;
+              }
+           }
+  
+           boolean var26 = this.currentScreen == null && Mouse.isButtonDown(0) && this.hasMouse;
+-          boolean var35 = false;
+           if(!this.gamemode.instantBreak && this.blockHitTime <= 0) {
+              if(var26 && this.selected != null && this.selected.entityPos == 0) {
+                 var4 = this.selected.x;
+--- 1596,1613 ----
+           }
+  
+           if(this.currentScreen == null) {
+!             if(Mouse.isButtonDown(0) && this.ticks - this.lastClick >= this.timer.tps / 4.0F && this.hasMouse) {
+                 this.onMouseClick(0);
+                 this.lastClick = this.ticks;
+              }
+  
+!             if(Mouse.isButtonDown(1) && this.ticks - this.lastClick >= this.timer.tps / 4.0F && this.hasMouse) {
+                 this.onMouseClick(1);
+                 this.lastClick = this.ticks;
+              }
+           }
+  
+           boolean var26 = this.currentScreen == null && Mouse.isButtonDown(0) && this.hasMouse;
+           if(!this.gamemode.instantBreak && this.blockHitTime <= 0) {
+              if(var26 && this.selected != null && this.selected.entityPos == 0) {
+                 var4 = this.selected.x;
+***************
+*** 1711,1722 ****
+                 if((var57 = var32.getHighestTile(var60, var52)) <= var45 + 4 && var57 >= var45 - 4) {
+                    float var56 = var39.random.nextFloat();
+                    float var62 = var39.random.nextFloat();
+!                   var39.minecraft.particleManager.spawnParticle(new WaterDropParticle(var32, (float)var60 + var56, (float)var57 + 0.1F, (float)var52 + var62));
+                 }
+              }
+           }
+  
+-          LevelRenderer var31 = this.levelRenderer;
+           ++this.levelRenderer.ticks;
+           this.level.tickEntities();
+           if(!this.isOnline()) {
+--- 1681,1691 ----
+                 if((var57 = var32.getHighestTile(var60, var52)) <= var45 + 4 && var57 >= var45 - 4) {
+                    float var56 = var39.random.nextFloat();
+                    float var62 = var39.random.nextFloat();
+!                   var39.minecraft.particleManager.spawnParticle(new WaterDropParticle(var32, var60 + var56, var57 + 0.1F, var52 + var62));
+                 }
+              }
+           }
+  
+           ++this.levelRenderer.ticks;
+           this.level.tickEntities();
+           if(!this.isOnline()) {

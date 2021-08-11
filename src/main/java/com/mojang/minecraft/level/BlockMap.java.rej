@@ -1,0 +1,21 @@
+*** com/mojang/minecraft/level/BlockMap.java	2013-07-15 21:08:36.000000000 -0700
+--- com/mojang/minecraft/level/BlockMap.java	2013-07-15 20:56:23.160431000 -0700
+***************
+*** 242,249 ****
+                       boolean var21 = var10000;
+  
+                       for(int var23 = 0; var23 < var12.size(); ++var23) {
+!                         Entity var22;
+!                         if((var22 = (Entity)var12.get(var23)).shouldRender(var1)) {
+                             if(!var21) {
+                                AABB var24 = var22.bb;
+                                if(!var2.isBoxInFrustum(var24.x0, var24.y0, var24.z0, var24.x1, var24.y1, var24.z1)) {
+--- 241,248 ----
+                       boolean var21 = var10000;
+  
+                       for(int var23 = 0; var23 < var12.size(); ++var23) {
+!                         Entity var22 = var12.get(var23);
+!                         if(var22.shouldRender(var1)) {
+                             if(!var21) {
+                                AABB var24 = var22.bb;
+                                if(!var2.isBoxInFrustum(var24.x0, var24.y0, var24.z0, var24.x1, var24.y1, var24.z1)) {
